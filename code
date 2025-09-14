@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+struct Course {
+    string name;
+    float grade;
+    int creditHours;
+};
+
+int main() {
+    int numCourses;
+    cout << "Enter the number of courses: ";
+    while (!(cin >> numCourses) || numCourses <= 0) {
+        cout << "Invalid input! Enter a positive number: ";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+
+    vector<Course> courses(numCourses);
+    float totalPoints = 0;
+    int totalCredits = 0;
+
+    cin.ignore(); // clear input buffer
+
+    for (int i = 0; i < numCourses; i++) {
+        cout << "\nEnter course " << i + 1 << " name: ";
+        getline(cin, courses[i].name);
+
+        cout << "Enter grade (0.0 - 4.0) for " << courses[i].name << ": ";
+        while (!(cin >> courses[i].grade) || courses[i].grade < 0.0 || courses[i].grade > 4.0) {
+            cout << "Invalid grade! Enter a value between 0.0 and 4.0: ";
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
+
+        cout << "Enter credit hours for " << courses[i].name << ": ";
+        while (!(cin >> courses[i].creditHours) || courses[i].creditHours <= 0) {
+            cout << "Invalid input! Enter a positive number of credit hours: ";
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
+
+        totalPoints += courses[i].grade * courses[i].creditHours;
+        totalCredits += courses[i].creditHours;
+        cin.ignore(); // clear buffer before next getline
+    }
+
+    float cgpa = totalPoints / totalCredits;
+
+    cout << "\n--- Individual Course Grades ---\n";
+    for (int i = 0; i < numCourses; i++) {
+        cout << courses[i].name << ": Grade = " << courses[i].grade 
+             << ", Credit Hours = " << courses[i].creditHours << endl;
+    }
+
+    cout << "\nFinal CGPA = " << cgpa << endl;
+
+    return 0;
+}
